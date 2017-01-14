@@ -9,25 +9,43 @@ overlap.
 You can input the z-value for the confidence level manually. If you don't
 it will try to use the ztables tool to figure it out.
 
-Note that for sample sizes smaller than 30 it will use t-distributions
+Note that for sample sizes smaller than about 30 it will use t-distributions
 automatically unless you specify -z.
 
-Here is an example use.
+Here is an example use. Note that I used expr to make it compatible with
+bash 3.x.
 ```bash
-   $ echo -e '2.1\n1.9\n1.9\n2.0\n2.0\n2.1\n2.0\n1.9\n2.1\n2.0\n1.9\n2.0\n2.1\n2.0\n2.0\n2.1\n2.0\n2.0\n2.0\n1.9\n2.1\n2.0\n2.0\n2.0\n2.1\n2.0\n2.1\n1.9\n2.0\n2.1\n2.1\n2.1\n2.0\n1.9\n2.0\n2.0\n1.9\n2.1\n2.0\n2.0' | \
-       ./dsconf.py -k 1 -z 1.96 -c 0.95 -p 2
+   $ for i in $(seq 200) ; \
+      do n=$(expr $i % 3); \
+         case $n in \
+           0) echo 19;; \
+           1) echo 20;; \
+           2) echo 21;; \
+         esac ; \
+      done | ./dsconf.py -p 2
 
+   dataset          = stdin
    confidence level = 95.0%
    z-value          = 1.96
-   size             = 40
-   mean             = 2.01 (arithmetic)
-   bound factor     = 0.0219695827021
-   lower bound      = 1.9880304173
-   upper bound      = 2.0319695827
-   bound diff       = 0.0439391654041
+   size             = 200
+   mean             = 20.005 (arithmetic)
+   median           = 20.0
+   min              = 19.0
+   max              = 21.0
+   above mean       = 67 33.5%
+   below mean       = 133 66.5%
+   stddev           = 0.817506319801
+   bound factor     = 0.113300595429
+   lower bound      = 19.8916994046
+   upper bound      = 20.1183005954
+   bound diff       = 0.226601190859
+   null hypothesis  = rejected
 
-   The confidence interval about the mean 2.01 for a confidence level of
-   95.0% is in the range [1.99 .. 2.03].
+   The interval about the mean 20.00 for a confidence level of
+   95.0% is in the range [19.89 .. 20.12].
+
+   The interval does not include 0 which means that the null
+   hypothesis can be rejected. The interval is meaningful.
 ```
 By default the result is displayed with 5 digits of precision but it was
 changed to 2 digits using the -p option.

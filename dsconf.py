@@ -14,8 +14,8 @@ it will try to use the ztables tool to figure it out.
 Note that for sample sizes smaller than 30 it will use t-distributions
 automatically unless you specify -z.
 
-Here is an example use. Note that I used expr instead of (( )) to make
-it compatible with bash 3.x.
+Here is an example use. Note that I used expr to make it compatible with
+bash 3.x.
 
    $ for i in $(seq 200) ; \
       do n=$(expr $i % 3); \
