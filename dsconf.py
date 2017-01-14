@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 r'''
-This tool analyzes datasets to the interval for a specified confidence
+This tool analyzes a dataset for the interval with a specified confidence
 level.
 
 There are many uses for a tool like this. For example, you can use it
