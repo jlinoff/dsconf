@@ -1,5 +1,5 @@
 # dsconf
-Aanalyzes datasets to the interval for a specified confidence level.
+Aanalyzes datasets for the interval associated with a specified confidence level.
 
 There are many uses for a tool like this. For example, you can use it
 to determine whether min or max values are in the range. Or, you could
