@@ -52,6 +52,8 @@ changed to 2 digits using the -p option.
 
 Note that ztables was copied over from https://github.com/jlinoff/ztables.
 
+It has been tested using python 2.7 and 3.6.
+
 ## Calculation details
 From page 210 in [1].
 
