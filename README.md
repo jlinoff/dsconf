@@ -33,3 +33,18 @@ By default the result is displayed with 5 digits of precision but it was
 changed to 2 digits using the -p option.
 
 Note that ztables was copied over from https://github.com/jlinoff/ztables.
+
+## Calculation details
+From page 210 in [1].
+
+### Step 1. Compute the sample means
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://cloud.githubusercontent.com/assets/2991242/21951651/c22f8e9a-d9be-11e6-83d5-ab59b99dd9a7.png" width="128" alt="sample mean">
+
+### Step 2. Compute the sample standard deviation
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://cloud.githubusercontent.com/assets/2991242/21951652/d12a5a10-d9be-11e6-9cf9-c19fb561c245.png" width="256" alt="sample stand deviation">
+
+### Step 3. Compute the confidence interval
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://cloud.githubusercontent.com/assets/2991242/21951666/df247646-d9be-11e6-85bd-e54a05846dc4.png" width="196" alt="confidence interval">
