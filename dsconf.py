@@ -43,7 +43,8 @@ import subprocess
 
 
 #VERSION = '0.1' # Initial implementation
-VERSION = '0.2' # Added the null hypothesis reporting and above/below
+#VERSION = '0.2' # Added the null hypothesis reporting and above/below
+VERSION = '0.3' # Added -t to define the minimum threshold
 
 
 def runcmd(cmd, show_output=True):
@@ -174,6 +175,16 @@ The default is column %(default)s.
                         metavar=('INTEGER'),
                         help='''Decimal digits of precision for the mean
 and the confidence interval bounds.
+The default is %(default)s.
+ ''')
+
+    parser.add_argument('-t', '--threshold',
+                        action='store',
+                        type=int,
+                        default=5,
+                        metavar=('INTEGER'),
+                        help='''Minimum number of data points.
+If there are fewer data points, an error is reported.
 The default is %(default)s.
  ''')
 
@@ -313,7 +324,7 @@ def rdds(opts, fn, ifp):
         except ValueError:
             infov(opts, 'skipping line {} in {}: not a number: {}'.format(ln, fn, token), vl=2)
             continue
-    minth = 10
+    minth = opts.threshold
     if len(ds) < minth:
         err('too few data points at column {} in {}, found {}, need at least {}'.format(col, fn, len(ds), minth))
     return ds
