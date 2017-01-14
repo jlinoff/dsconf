@@ -42,7 +42,8 @@ import sys
 import subprocess
 
 
-VERSION = '0.1'
+#VERSION = '0.1' # Initial implementation
+VERSION = '0.2' # Added the null hypothesis reporting and above/below
 
 
 def runcmd(cmd, show_output=True):
@@ -344,6 +345,7 @@ def process(opts, fn, ifp):
     infov(opts, 'mean = {}'.format(amean))
 
     # Get the variance.
+    # correct variance (N-1) vs (N).
     var = sum([ (v - amean)**2 for v in sds]) / float(n - 1.0)
     infov(opts, 'variance = {}'.format(var))
 
@@ -357,24 +359,49 @@ def process(opts, fn, ifp):
     ub = amean + fac
     cl = opts.conf * 100.
 
-    fs = '{:.' + str(opts.precision) + 'f}'
+    # Compute the above and below numbers.
+    above = sum(val > amean for val in sds)
+    below = sum(val < amean for val in sds)
+    pabove = 100. * above / float(n) 
+    pbelow = 100. * below / float(n) 
+    
+    # Format the output data.
+    fs = '{:,.' + str(opts.precision) + 'f}'
     ams = fs.format(amean)
     lbs = fs.format(lb)
     ubs = fs.format(ub)
     infov(opts, 'precision = {}'.format(opts.precision))
+
+    # Check the null hypothesis.
+    nh = 'accepted' if lb <= 0 and ub >= 0 else 'rejected'
                         
     print('')
+    print('dataset          = {}'.format(fn))
     print('confidence level = {:.1f}%'.format(cl))
     print('z-value          = {}'.format(z))
     print('size             = {:,}'.format(n))
     print('mean             = {} (arithmetic)'.format(amean))
+    print('median           = {}'.format(median))
+    print('min              = {}'.format(sds[0]))
+    print('max              = {}'.format(sds[-1]))
+    print('above mean       = {:,} {:.2f}%'.format(above, pabove))
+    print('below mean       = {:,} {:.2f}%'.format(below, pbelow))
+    print('stddev           = {}'.format(stddev))
     print('bound factor     = {}'.format(fac))
     print('lower bound      = {}'.format(lb))
     print('upper bound      = {}'.format(ub))
     print('bound diff       = {}'.format(ub - lb))
+    print('null hypothesis  = {}'.format(nh))
     print('')
-    print('The confidence interval about the mean {} for a confidence level of'.format(ams))
+    print('The interval about the mean {} for a confidence level of'.format(ams))
     print('{:.1f}% is in the range [{} .. {}].'.format(cl, lbs, ubs))
+    print('')
+    if nh == 'accepted':
+        print('The interval includes 0 which means that null hypothesis cannot')
+        print('be rejected. The interval is not meaningful.')
+    else:
+        print('The interval does not include 0 which means that the null')
+        print('hypothesis can be rejected. The interval is meaningful.')
     print('')
 
 
