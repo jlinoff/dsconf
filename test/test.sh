@@ -40,7 +40,7 @@ tid='all the same'
 printf '\n*** test %s\n' "$tid"
 echo "2" | awk '{for(i=0;i<50;i++) {printf("%s\n", $1)}}' | $ConfDS | tee $$.tmp
 st=$?
-if  grep '2\.00000 \.\. 2\.00000' <$$.tmp; then
+if  grep '2\.00000 \.\. 2\.00000' <$$.tmp >/dev/null ; then
     passed_fct "$tid"
 else
     failed_fct "$tid"
@@ -53,7 +53,7 @@ tid='50 values in range: [11.5 .. 12.5], 95% CL'
 printf '\n*** test %s\n' "$tid"
 ./gends.py -d 2 50 11.5 12.5 | $ConfDS | tee $$.tmp
 st=$?
-if  grep '11\.[0-9]* \.\. 12.[0-9]*' <$$.tmp; then
+if  grep '11\.[0-9]* \.\. 12.[0-9]*' <$$.tmp > /dev/null ; then
     passed_fct "$tid"
 else
     failed_fct "$tid"
@@ -66,7 +66,7 @@ tid='50 values in range: [11.5 .. 12.5], 98% CL'
 printf '\n*** test %s\n' "$tid"
 ./gends.py -d 2 50 11.5 12.5 | $ConfDS -c 0.98 | tee $$.tmp
 st=$?
-if  grep '11\.[0-9]* \.\. 12.[0-9]*' <$$.tmp; then
+if  grep '11\.[0-9]* \.\. 12.[0-9]*' <$$.tmp > /dev/null ; then
     passed_fct "$tid"
 else
     failed_fct "$tid"
@@ -92,13 +92,26 @@ tid='20 values in range: [11.5 .. 12.5], 99% CL'
 printf '\n*** test %s\n' "$tid"
 ./gends.py -d 2 20 11.5 12.5 | $ConfDS -c 0.99 | tee $$.tmp
 st=$?
-if  egrep '11\.[0-9]* \.\. 12.[0-9]*' <$$.tmp; then
+if  egrep '11\.[0-9]* \.\. 12.[0-9]*' <$$.tmp >/dev/null ; then
     passed_fct "$tid"
 else
     failed_fct "$tid"
     cat $$.tmp
 fi
 rm -f $$.tmp
+
+# Test 6. 100 values, null hypothesis cannot be rejected.
+tid='null hypothesis cannot be rejected'
+cat ds-null-hypothesis-accepted.txt | tr ' ' '\n' | awk '{if(NF>0){print $1}}' | ../dsconf.py -p 2 | tee $$.tmp
+st=$?
+if egrep 'is not meaningful' <$$.tmp >/dev/null ; then
+    passed_fct "$tid"
+else
+    failed_fct "$tid"
+    cat $$.tmp
+fi
+rm -f $$.tmp
+
 
 # Summary:
 echo
