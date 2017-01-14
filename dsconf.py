@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 r'''
-This tool analyzes a dataset for the interval with a specified confidence
-level.
+This tool analyzes a dataset for the interval associated with a
+specified confidence level.
 
 There are many uses for a tool like this. For example, you can use it
 to determine whether min or max values are in the range. Or, you could
