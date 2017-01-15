@@ -54,8 +54,72 @@ Note that ztables was copied over from https://github.com/jlinoff/ztables.
 
 It has been tested using python 2.7 and 3.6.
 
-## Example 2. Parsing multiple columns of data.
-This example shows how to process a file with multiple columns of data.
+## Example 1. Analyzing the second column of data.
+This example shows how to process a file with two columns of data
+and only look at the second column.
+
+Note that there is no need to filter because the program ignores
+data points that are not floating point numbers so the "Sample"
+string from the first line will be ignored. You can see that because
+the sample size is 50. If you want to see the details, use the verbose
+option twice: `-v -v`.
+
+```bash
+$ wc -l ds.txt
+      51 ds.txt
+$ head ds.txt
+# Sample data
+ 98  98
+ 98  98
+ 98  98
+ 98  98
+ 98  98
+ 98  98
+ 99  99
+ 99  99
+ 99  99
+$ tail ds.txt
+101 101
+101 101
+101 101
+101 101
+101 101
+102 102
+102 102
+102 102
+102 102
+102 102
+$ ./dsconf.py -k 2 -p 2 x
+
+dataset          = x
+confidence level = 95.0%
+z-value          = 1.96
+size             = 50
+mean             = 99.98 (arithmetic)
+median           = 100.0
+min              = 98.0
+max              = 102.0
+above mean       = 31 62.0%
+below mean       = 19 38.0%
+stddev           = 1.2035661297
+bound factor     = 0.333611510593
+lower bound      = 99.6463884894
+upper bound      = 100.313611511
+bound diff       = 0.667223021186
+null hypothesis  = rejected
+
+The interval about the mean 99.98 for a confidence level of
+95.0% is in the range [99.65 .. 100.31].
+
+The interval does not include 0 which means that the null
+hypothesis can be rejected. The interval is meaningful.
+
+```
+
+
+## Example 2. Analyzing all columns of data.
+This example shows how to process a file with multiple columns of data
+and analyze all of the data points from every column.
 
 ```bash
 $ cat ds.txt
