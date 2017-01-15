@@ -54,6 +54,51 @@ Note that ztables was copied over from https://github.com/jlinoff/ztables.
 
 It has been tested using python 2.7 and 3.6.
 
+## Example 2. Parsing multiple columns of data.
+This example shows how to process a file with multiple columns of data.
+
+```bash
+$ cat ds.txt
+# Sample data
+ 98  98  98  98  98  98  98  98  98  98
+ 98  98  99  99  99  99  99  99  99  99
+ 99  99  99  99  99  99  99  99  99  99
+ 99  99  99  99  99  99  99  99 100 100
+100 100 100 100 100 100 100 100 100 100
+100 100 100 100 100 100 100 100 100 100
+100 101 101 101 101 101 101 101 101 101
+101 101 101 101 101 101 101 101 101 101
+101 101 101 101 101 101 101 101 101 101
+102 102 102 102 102 102 102 102 102 102
+
+$ # Ignore blank lines and lines that start with '#'.
+$ egrep -v '^$|^ *#' <ds.txt | awk '{for(i=1;i<=NF;i++){print $i}}' | ./dsconf.py -p 2
+
+dataset          = stdin
+confidence level = 95.0%
+z-value          = 1.96
+size             = 100
+mean             = 99.99 (arithmetic)
+median           = 100.0
+min              = 98.0
+max              = 102.0
+above mean       = 62 62.0%
+below mean       = 38 38.0%
+stddev           = 1.20180840168
+bound factor     = 0.235554446729
+lower bound      = 99.7544455533
+upper bound      = 100.225554447
+bound diff       = 0.471108893458
+null hypothesis  = rejected
+
+The interval about the mean 99.99 for a confidence level of
+95.0% is in the range [99.75 .. 100.23].
+
+The interval does not include 0 which means that the null
+hypothesis can be rejected. The interval is meaningful.
+
+```
+
 ## Calculation details
 From page 210 in [1].
 
