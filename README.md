@@ -93,7 +93,7 @@ $ tail ds.txt
 102 102
 $ ./dsconf.py -k 2 -p 2 x
 
-dataset          = x
+dataset          = ds.txt
 confidence level = 95.0%
 z-value          = 1.96
 size             = 50
