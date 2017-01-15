@@ -166,7 +166,14 @@ hypothesis can be rejected. The interval is meaningful.
 ```
 
 ## Calculation details
-From page 210 in [1].
+These are some of the significant calculations that are done.
+
+Note that I am using the corrected sample standard deviation based on
+the unbiased estimator for the population variance (Bessel's
+correction).
+
+The determination of the z-value is not shown. See
+https://github.com/jlinoff/ztables for details.
 
 ### Step 1. Compute the sample means
 
