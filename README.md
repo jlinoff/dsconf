@@ -12,9 +12,11 @@ it will try to use the ztables tool to figure it out.
 Note that for sample sizes smaller than about 30 it will use t-distributions
 automatically unless you specify -z.
 
-Here is an example use. Note that I used expr to make it compatible with
-bash 3.x.
+Here is an example that generates a single column of data with 200
+entries where each entry is either 19, 20 or 21. Note that I used expr
+to make it compatible with bash 3.x.
 ```bash
+
    $ for i in $(seq 200) ; \
       do n=$(expr $i % 3); \
          case $n in \
