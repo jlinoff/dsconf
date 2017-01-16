@@ -292,10 +292,13 @@ def getz(opts, n):
     n is the number of data points in the sample
     '''
     infov(opts, 'getting z value for {} conf level'.format(opts.conf))
+
+    # Create the command string.
+    # Note that we use the -b option that was introduced in 0.9.3.
     if n < 30:
-        cmd = '{} -t {} -p {} {}'.format(opts.ztables_path, n, opts.conf, opts.ztables_args)
+        cmd = '{} -b -t {} -p {} {}'.format(opts.ztables_path, n, opts.conf, opts.ztables_args)
     else:
-        cmd = '{} -s -p {} {}'.format(opts.ztables_path, opts.conf, opts.ztables_args)
+        cmd = '{} -b -s -p {} {}'.format(opts.ztables_path, opts.conf, opts.ztables_args)
     infov(opts, 'cmd = {}'.format(cmd))
 
     show = True if opts.verbose > 1 else False
@@ -303,10 +306,17 @@ def getz(opts, n):
     if s:
         err('command failed with status {}: {}'.format(s, cmd))
 
+    # The output will look something like this:
+    #    $ ./ztables.py -b -s -p 0.95
+    #    95.00% 1.960
+    # The first field is the confidence level.
+    # The second field is the z-value.
     z = None
     for line in o.split('\n'):
         line = line.strip()
         if '%' in line:
+            # Find the first line that contains '%'.
+            # It will be the first line if -b was specified.
             if z is not None:
                 err('unexpected output, found more than one z value, cannot parse')
             flds = line.split()
